@@ -4071,6 +4071,10 @@ def run_bot():
 
 def run_periodic_sync():
     """Run periodic sync with Google Sheets and channel posting"""
+    if not GoogleSheetsService or not ChannelService:
+        logger.warning("⚠️  Periodic sync disabled - services not available")
+        return
+    
     time.sleep(30)  # Wait for app to start
     
     # Configurable intervals via environment variables
@@ -4089,8 +4093,9 @@ def run_periodic_sync():
             with app.app_context():
                 # Sync from Google Sheets (every SYNC_INTERVAL seconds)
                 if current_time - last_sync >= sync_interval:
-                    gs_service = GoogleSheetsService()
-                    if gs_service.is_available():
+                    if GoogleSheetsService:
+                        gs_service = GoogleSheetsService()
+                        if gs_service.is_available():
                         logger.info("🔄 Syncing from Google Sheets...")
                         try:
                             success = gs_service.sync_all_from_sheets()
