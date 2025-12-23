@@ -4002,8 +4002,19 @@ from telegram import Update
 import threading
 import asyncio
 import time
-from google_sheets_service import GoogleSheetsService
-from channel_service import ChannelService
+
+# Optional imports - handle gracefully if not available
+try:
+    from google_sheets_service import GoogleSheetsService
+except ImportError:
+    GoogleSheetsService = None
+    logger.warning("⚠️  GoogleSheetsService not available")
+
+try:
+    from channel_service import ChannelService
+except ImportError:
+    ChannelService = None
+    logger.warning("⚠️  ChannelService not available")
 
 def run_bot():
     """Run Telegram bot in separate thread"""
