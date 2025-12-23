@@ -29,4 +29,25 @@ affiliate_system.db
 backend/affiliate_system.db
 backend/uploads/
 uploads/
+backend/backups/
+backend/instance/
+*.md
+!README.md
+*.txt
+*.bat
+*.ps1
+*.sh
+backend/test_*.py
+backend/comprehensive_test.py
+backend/backup_database.py
+backend/reset_database.py
+backend/check_bot_status.py
+backend/clear_updates.py
+backend/force_clear_webhook.py
+backend/set_owner_telegram.py
+backend/verify_google_sheets_mapping.py
+backend/fix_google_sheets_headers.py
+backend/add_sheet_order_column.py
+backend/generate_secrets.py
+backend/migrate_database.py
 
