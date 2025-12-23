@@ -75,14 +75,19 @@ db.init_app(app)
 jwt = JWTManager(app)
 
 # CORS configuration - allow frontend URL
-FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:3000')
+# Make FRONTEND_URL optional to avoid build-time errors
+FRONTEND_URL = os.getenv('FRONTEND_URL', '')
 allowed_origins = [
-    FRONTEND_URL,
     'http://localhost:8000',
     'http://localhost:5000',
+    'http://localhost:3000',
     'https://affiliate-system-rho.vercel.app',  # Production Vercel URL
     'https://*.vercel.app',  # Vercel preview deployments
 ]
+
+# Add FRONTEND_URL if provided
+if FRONTEND_URL:
+    allowed_origins.append(FRONTEND_URL)
 
 # Add specific Vercel URL if provided
 vercel_url = os.getenv('VERCEL_URL')
