@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - Affiliate Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/landing.css">
+    <style>
+        .register-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 100px 20px 50px;
+        }
+        .register-box {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .step.active .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .step.completed .step-number {
+            background: #48bb78;
+            color: white;
+        }
+        .step-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .step.active .step-label {
+            color: #667eea;
+            font-weight: 600;
+        }
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+        }
+        .membership-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .membership-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        .membership-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+        .payment-proof-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+        .payment-proof-preview.show {
+            display: block;
+        }
+        .btn-next, .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-next:hover, .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        .btn-back {
+            background: #e0e0e0;
+            border: none;
+            color: #666;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .alert {
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .payment-info {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .payment-info h6 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .payment-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="landing.html">
+                <i class="fas fa-chart-line me-2"></i>
+                <strong>Affiliate System</strong>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="landing.html">Kembali ke Home</a>
+                <a class="nav-link btn-login" href="index.html">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Container -->
+    <div class="register-container">
+        <div class="register-box">
+            <h2 class="text-center mb-4">
+                <i class="fas fa-user-plus me-2"></i>Daftar Member Baru
+            </h2>
+
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step active" id="step1-indicator">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Data Diri</div>
+                </div>
+                <div class="step" id="step2-indicator">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Membership</div>
+                </div>
+                <div class="step" id="step3-indicator">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Pembayaran</div>
+                </div>
+            </div>
+
+            <!-- Alert Messages -->
+            <div id="alertContainer"></div>
+
+            <!-- Step 1: Personal Info -->
+            <div class="form-section active" id="step1">
+                <h4 class="mb-4">Data Diri</h4>
+                <form id="personalInfoForm">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="fullName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nomor WhatsApp <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" id="whatsapp" placeholder="081234567890" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="email@example.com">
+                        <small class="text-muted">Opsional, bisa dikosongkan</small>
+                    </div>
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="landing.html" class="btn btn-back">Batal</a>
+                        <button type="submit" class="btn btn-next">Selanjutnya</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: Membership Selection -->
+            <div class="form-section" id="step2">
+                <h4 class="mb-4">Pilih Membership</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="membership-card" data-membership="basic" data-price="97000">
+                            <div class="text-center">
+                                <h5>Basic Member</h5>
+                                <div class="plan-price mb-3">
+                                    <span class="currency">Rp</span>
+                                    <span class="amount">97</span>
+                                    <span class="period">.000</span>
+                                </div>
+                                <ul class="list-unstyled text-start">
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Materi AI Content Creation</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Tutorial dasar sampai upload</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Akses platform website</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Submit report via website/bot</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="membership-card" data-membership="vip" data-price="299000">
+                            <div class="text-center">
+                                <span class="badge bg-danger mb-2">POPULER</span>
+                                <h5>VIP Member</h5>
+                                <div class="plan-price mb-3">
+                                    <span class="currency">Rp</span>
+                                    <span class="amount">299</span>
+                                    <span class="period">.000</span>
+                                </div>
+                                <ul class="list-unstyled text-start">
+                                    <li><i class="fas fa-check-circle text-success me-2"></i><strong>Semua Basic Member</strong></li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Group diskusi eksklusif</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Tanya jawab langsung</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Zoom meeting rutin</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Akun TikTok affiliate</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i><strong>Bagi hasil 55% komisi!</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-back" onclick="goToStep(1)">Kembali</button>
+                    <button type="button" class="btn btn-next" id="btnNextStep2" disabled>Selanjutnya</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Payment -->
+            <div class="form-section" id="step3">
+                <h4 class="mb-4">Pembayaran</h4>
+                <div class="payment-info">
+                    <h6><i class="fas fa-info-circle me-2"></i>Informasi Pembayaran</h6>
+                    <p><strong>Membership:</strong> <span id="selectedMembershipDisplay"></span></p>
+                    <p><strong>Harga:</strong> Rp <span id="selectedPriceDisplay"></span></p>
+                    <hr>
+                    <p><strong>Rekening Tujuan:</strong></p>
+                    <p>💰 BCA: 1234567890 (a.n. Admin)</p>
+                    <p>💰 DANA: 081234567890 (a.n. Admin)</p>
+                    <p class="text-muted mt-3"><small>⚠️ Pastikan transfer ke rekening yang benar!</small></p>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Metode Pembayaran <span class="text-danger">*</span></label>
+                    <select class="form-select" id="paymentMethod" required>
+                        <option value="">Pilih metode pembayaran</option>
+                        <option value="wallet">Wallet (DANA/OVO/GoPay)</option>
+                        <option value="bank">Bank Transfer</option>
+                    </select>
+                </div>
+
+                <div class="mb-3" id="paymentDetailContainer" style="display: none;">
+                    <label class="form-label">Detail Pembayaran <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="paymentDetail" placeholder="Contoh: DANA - 081234567890 atau BCA - 1234567890 - Nama Pemilik">
+                    <small class="text-muted">Isi detail wallet atau bank account Anda</small>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Upload Bukti Pembayaran <span class="text-danger">*</span></label>
+                    <input type="file" class="form-control" id="paymentProof" accept="image/*" required>
+                    <small class="text-muted">Upload foto/screenshot bukti transfer (JPG, PNG, maks 5MB)</small>
+                    <img id="paymentProofPreview" class="payment-proof-preview" alt="Preview">
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-back" onclick="goToStep(2)">Kembali</button>
+                    <button type="submit" class="btn btn-submit" id="btnSubmit" form="paymentForm">Daftar Sekarang</button>
+                </div>
+
+                <form id="paymentForm" style="display: none;"></form>
+            </div>
+
+            <!-- Success Message -->
+            <div class="form-section text-center" id="successMessage" style="display: none;">
+                <div class="mb-4">
+                    <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                </div>
+                <h3 class="mb-3">Pendaftaran Berhasil!</h3>
+                <p class="text-muted mb-4">
+                    Terima kasih telah mendaftar. Admin akan memverifikasi pembayaran Anda dalam 1x24 jam.
+                    Anda akan mendapat notifikasi via email/website setelah pembayaran diverifikasi.
+                </p>
+                <div class="alert alert-info">
+                    <strong>Status:</strong> <span id="registrationStatus">⏳ Menunggu Verifikasi</span>
+                </div>
+                <a href="index.html" class="btn btn-primary">Login Sekarang</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/register.js"></script>
+</body>
+</html>
+

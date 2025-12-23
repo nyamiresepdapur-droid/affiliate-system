@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from flask_jwt_extended.exceptions import JWTDecodeError, InvalidHeaderError, NoAuthorizationError
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import BadRequest, UnprocessableEntity
+from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta, date, timezone
 from sqlalchemy import func, text
 from models import db, User, Product, Team, TeamMember, Content, Commission, Payment, ManagerBonus, DailyCommission, VideoStatistic, MemberDailySummary, Notification
@@ -49,18 +50,46 @@ if not SECRET_KEY or not JWT_SECRET_KEY:
     logger.warning("⚠️  Using default secrets. Change SECRET_KEY and JWT_SECRET_KEY in production!")
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=30)
 app.config['JWT_ERROR_MESSAGE_KEY'] = 'error'  # Use 'error' instead of 'msg' for consistency
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///affiliate_system.db'
+
+# Database configuration - support both SQLite (dev) and PostgreSQL (production)
+DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///affiliate_system.db')
+if DATABASE_URL.startswith('postgresql://'):
+    # PostgreSQL configuration
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        'pool_pre_ping': True,
+        'pool_recycle': 300,
+    }
+else:
+    # SQLite configuration (development)
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        'pool_pre_ping': True,
+        'pool_recycle': 300,
+        'connect_args': {'check_same_thread': False}  # SQLite specific
+    }
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# Database connection pooling (for SQLite, will help when migrating to PostgreSQL)
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'pool_pre_ping': True,
-    'pool_recycle': 300,
-    'connect_args': {'check_same_thread': False}  # SQLite specific
-}
 
 db.init_app(app)
 jwt = JWTManager(app)
-CORS(app)
+
+# CORS configuration - allow frontend URL
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:3000')
+allowed_origins = [
+    FRONTEND_URL,
+    'http://localhost:8000',
+    'http://localhost:5000',
+    'https://affiliate-system-rho.vercel.app',  # Production Vercel URL
+    'https://*.vercel.app',  # Vercel preview deployments
+]
+
+# Add specific Vercel URL if provided
+vercel_url = os.getenv('VERCEL_URL')
+if vercel_url:
+    allowed_origins.append(vercel_url)
+
+CORS(app, origins=allowed_origins, supports_credentials=True)
 
 # JWT Error Handlers - prevent 422 errors from JWT validation
 @jwt.expired_token_loader
@@ -354,6 +383,100 @@ def login():
         }), 200
     
     return jsonify({'error': 'Username atau password salah'}), 401
+
+@app.route('/api/register', methods=['POST'])
+def register_with_payment():
+    """Register new user with membership and payment proof upload"""
+    try:
+        # Get form data
+        full_name = request.form.get('full_name', '').strip()
+        whatsapp = request.form.get('whatsapp', '').strip()
+        email = request.form.get('email', '').strip()
+        membership_tier = request.form.get('membership_tier', '').strip()
+        membership_price = request.form.get('membership_price', '0')
+        payment_method = request.form.get('payment_method', '').strip()
+        payment_detail = request.form.get('payment_detail', '').strip()
+        payment_proof = request.files.get('payment_proof')
+
+        # Validation
+        if not full_name:
+            return jsonify({'error': 'Nama lengkap harus diisi'}), 400
+        if not whatsapp:
+            return jsonify({'error': 'Nomor WhatsApp harus diisi'}), 400
+        if not membership_tier or membership_tier not in ['basic', 'vip']:
+            return jsonify({'error': 'Pilih membership (basic atau vip)'}), 400
+        if not payment_method or payment_method not in ['wallet', 'bank']:
+            return jsonify({'error': 'Pilih metode pembayaran'}), 400
+        if not payment_detail:
+            return jsonify({'error': 'Detail pembayaran harus diisi'}), 400
+        if not payment_proof:
+            return jsonify({'error': 'Upload bukti pembayaran'}), 400
+
+        # Validate email if provided
+        if email and not re.match(r'^[^\s@]+@[^\s@]+\.[^\s@]+$', email):
+            return jsonify({'error': 'Format email tidak valid'}), 400
+
+        # Generate username from full name
+        username_base = re.sub(r'[^a-zA-Z0-9]', '', full_name.lower())[:20]
+        username = username_base
+        counter = 1
+        while User.query.filter_by(username=username).first():
+            username = f"{username_base}{counter}"
+            counter += 1
+
+        # Generate password (user will reset later or login via Telegram)
+        temp_password = generate_password_hash(f"temp_{username}_{datetime.now().timestamp()}")
+
+        # Create user
+        user = User(
+            username=username,
+            email=email or f"{username}@affiliate.local",
+            password_hash=temp_password,
+            role='member',
+            full_name=full_name,
+            whatsapp=whatsapp,
+            wallet=payment_detail if payment_method == 'wallet' else None,
+            bank_account=payment_detail if payment_method == 'bank' else None
+        )
+        db.session.add(user)
+        db.session.flush()
+
+        # Save payment proof
+        if payment_proof:
+            upload_folder = os.path.join(os.path.dirname(__file__), 'uploads', 'payment_proofs')
+            os.makedirs(upload_folder, exist_ok=True)
+            
+            filename = secure_filename(f"{user.id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{payment_proof.filename}")
+            filepath = os.path.join(upload_folder, filename)
+            payment_proof.save(filepath)
+            
+            # Store file path in pending payments (similar to Telegram bot)
+            # For now, we'll store in a simple way
+            payment_data = {
+                'user_id': user.id,
+                'type': 'registration',
+                'membership_tier': membership_tier,
+                'amount': int(membership_price),
+                'payment_method': payment_method,
+                'payment_detail': payment_detail,
+                'proof_file': filename,
+                'status': 'pending_verification'
+            }
+            # TODO: Store in database or file system for admin to verify
+
+        db.session.commit()
+
+        return jsonify({
+            'message': 'Pendaftaran berhasil! Admin akan memverifikasi pembayaran dalam 1x24 jam.',
+            'user_id': user.id,
+            'username': username,
+            'status': 'pending_verification'
+        }), 201
+
+    except Exception as e:
+        logger.error(f"Registration error: {e}", exc_info=True)
+        db.session.rollback()
+        return jsonify({'error': f'Terjadi kesalahan: {str(e)}'}), 500
 
 # ==================== USERS ====================
 @app.route('/api/users', methods=['GET'])
@@ -4050,5 +4173,7 @@ if __name__ == '__main__':
     
     # Run Flask app
     # use_reloader=False prevents bot from starting multiple times
-    app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)
+    # Get port from environment variable (Railway sets this) or default to 5000
+    port = int(os.getenv('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port, use_reloader=False)
 

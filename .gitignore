@@ -27,4 +27,6 @@ wheels/
 *.log
 affiliate_system.db
 backend/affiliate_system.db
+backend/uploads/
+uploads/
 

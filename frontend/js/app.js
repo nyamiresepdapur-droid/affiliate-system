@@ -1,4 +1,10 @@
-const API_URL = 'http://localhost:5000/api';
+// Load API URL from config or use default
+// Production: Railway backend
+// Development: Localhost
+const API_URL = (typeof window !== 'undefined' && window.API_URL) || 
+                (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'
+                    ? 'https://affiliate-system-production.up.railway.app/api'
+                    : 'http://localhost:5000/api');
 let currentUser = null;
 let token = null;
 
