@@ -34,6 +34,7 @@ backend/instance/
 *.md
 !README.md
 *.txt
+!backend/requirements.txt
 *.bat
 *.ps1
 *.sh
