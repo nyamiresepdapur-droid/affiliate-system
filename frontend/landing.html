@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affiliate Management System - Daftar Sekarang</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chart-line me-2"></i>
+                <strong>Affiliate System</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#plans">Paket</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Fitur</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#faq">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-login" href="index.html">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">
+                        Kelola Tim Affiliate<br>
+                        <span class="gradient-text">Dengan Mudah</span>
+                    </h1>
+                    <p class="hero-description">
+                        Platform lengkap untuk manage tim affiliate, tracking komisi, dan monitoring performa. 
+                        Daftar sekarang dan dapatkan akses ke semua fitur premium!
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#register" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-rocket me-2"></i>Daftar Sekarang
+                        </a>
+                        <a href="#plans" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-info-circle me-2"></i>Lihat Paket
+                        </a>
+                    </div>
+                    <div class="hero-stats mt-5">
+                        <div class="stat-item">
+                            <h3>500+</h3>
+                            <p>Active Members</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>10K+</h3>
+                            <p>Reports Processed</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>55%</h3>
+                            <p>Commission Rate</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image">
+                        <div class="floating-card card-1">
+                            <i class="fas fa-chart-bar"></i>
+                            <p>Analytics</p>
+                        </div>
+                        <div class="floating-card card-2">
+                            <i class="fas fa-users"></i>
+                            <p>Team Management</p>
+                        </div>
+                        <div class="floating-card card-3">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <p>Commission Tracking</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Plans -->
+    <section id="plans" class="plans-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Pilih Paket Membership</h2>
+                <p class="section-subtitle">Pilih paket yang sesuai dengan kebutuhan Anda</p>
+            </div>
+            <div class="row justify-content-center">
+                <!-- Basic Plan -->
+                <div class="col-lg-5 col-md-6 mb-4">
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <h3>Basic Member</h3>
+                            <div class="plan-price">
+                                <span class="currency">Rp</span>
+                                <span class="amount">97</span>
+                                <span class="period">.000</span>
+                            </div>
+                            <p class="plan-period">Sekali bayar</p>
+                        </div>
+                        <div class="plan-features">
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> Materi AI Content Creation</li>
+                                <li><i class="fas fa-check-circle"></i> Tutorial dasar sampai upload</li>
+                                <li><i class="fas fa-check-circle"></i> Akses platform website</li>
+                                <li><i class="fas fa-check-circle"></i> Submit report via website/bot</li>
+                                <li><i class="fas fa-check-circle"></i> Tracking komisi</li>
+                            </ul>
+                        </div>
+                        <div class="plan-footer">
+                            <a href="#register" class="btn btn-outline-primary w-100" data-plan="basic">
+                                Pilih Paket Ini
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIP Plan -->
+                <div class="col-lg-5 col-md-6 mb-4">
+                    <div class="plan-card plan-vip">
+                        <div class="plan-badge">POPULER</div>
+                        <div class="plan-header">
+                            <h3>VIP Member</h3>
+                            <div class="plan-price">
+                                <span class="currency">Rp</span>
+                                <span class="amount">299</span>
+                                <span class="period">.000</span>
+                            </div>
+                            <p class="plan-period">Sekali bayar</p>
+                        </div>
+                        <div class="plan-features">
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> <strong>Semua Basic Member</strong></li>
+                                <li><i class="fas fa-check-circle"></i> Group diskusi eksklusif</li>
+                                <li><i class="fas fa-check-circle"></i> Tanya jawab langsung</li>
+                                <li><i class="fas fa-check-circle"></i> Zoom meeting rutin</li>
+                                <li><i class="fas fa-check-circle"></i> Akun TikTok affiliate (keranjang kuning)</li>
+                                <li><i class="fas fa-check-circle"></i> <strong>Bagi hasil 55% komisi!</strong></li>
+                                <li><i class="fas fa-check-circle"></i> Priority support</li>
+                            </ul>
+                        </div>
+                        <div class="plan-footer">
+                            <a href="#register" class="btn btn-primary w-100" data-plan="vip">
+                                Pilih Paket Ini
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Fitur Lengkap</h2>
+                <p class="section-subtitle">Semua yang Anda butuhkan untuk manage tim affiliate</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>Analytics Dashboard</h4>
+                        <p>Monitor performa tim dengan dashboard analytics yang lengkap. Lihat statistik real-time dan laporan detail.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <h4>Submit Report</h4>
+                        <p>Submit laporan kinerja harian dengan mudah via website atau Telegram bot. Upload link video dan tracking otomatis.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h4>Commission Tracking</h4>
+                        <p>Tracking komisi real-time. Lihat total komisi, pending, dan sudah dibayar. Transparan dan akurat.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4>Team Management</h4>
+                        <p>Manage tim affiliate dengan mudah. Lihat semua member, assign leader, dan monitor performa.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h4>Real-time Notifications</h4>
+                        <p>Dapat notifikasi real-time untuk approval report, payment verification, dan update penting lainnya.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h4>Telegram Bot Integration</h4>
+                        <p>Manage semua via Telegram bot. Daftar, submit report, cek komisi, semuanya bisa dari bot!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Pertanyaan Umum</h2>
+                <p class="section-subtitle">Temukan jawaban untuk pertanyaan yang sering diajukan</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    Apa perbedaan Basic Member dan VIP Member?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <strong>Basic Member</strong> mendapatkan akses ke materi AI Content Creation, tutorial, dan platform website. 
+                                    <strong>VIP Member</strong> mendapatkan semua Basic Member plus group diskusi, tanya jawab langsung, zoom meeting, 
+                                    akun TikTok affiliate, dan yang terpenting: <strong>bagi hasil 55% komisi!</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    Bagaimana cara daftar?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Anda bisa daftar via website atau Telegram bot. Isi data lengkap, pilih membership (Basic/VIP), 
+                                    transfer pembayaran, dan upload bukti pembayaran. Admin akan verify dalam 1x24 jam.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    Bisa upgrade dari Basic ke VIP?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Tentu! Anda bisa upgrade kapan saja. Hanya perlu bayar selisih harga (Rp 202.000) untuk upgrade dari Basic ke VIP. 
+                                    Prosesnya sama: transfer, upload bukti, tunggu verify.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                    Bagaimana cara submit report?
+                                </button>
+                            </h2>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Anda bisa submit report via website (dashboard → My Reports) atau via Telegram bot (command: /lapor). 
+                                    Kirim link video, tanggal upload, dan akun TikTok. Admin akan approve dan komisi akan dihitung otomatis.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                    Kapan komisi dibayar?
+                                </button>
+                            </h2>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Komisi dibayar sesuai dengan jadwal yang ditentukan. VIP Member mendapatkan 55% dari total komisi. 
+                                    Anda bisa cek status komisi di dashboard atau via Telegram bot (command: /komisi).
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                    Apakah ada support?
+                                </button>
+                            </h2>
+                            <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Ya! VIP Member mendapatkan priority support via group diskusi dan tanya jawab langsung. 
+                                    Basic Member bisa hubungi admin via website atau Telegram bot.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="register" class="cta-section py-5">
+        <div class="container">
+            <div class="cta-box text-center">
+                <h2>Siap Memulai?</h2>
+                <p>Daftar sekarang dan mulai kelola tim affiliate Anda dengan mudah!</p>
+                <a href="register.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-rocket me-2"></i>Daftar Sekarang
+                </a>
+                <p class="mt-3">
+                    <small>Sudah punya akun? <a href="index.html">Login di sini</a></small>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="fas fa-chart-line me-2"></i>Affiliate System</h5>
+                    <p>Platform lengkap untuk manage tim affiliate dengan mudah dan efisien.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#plans">Paket</a></li>
+                        <li><a href="#features">Fitur</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i>support@affiliate-system.com</li>
+                        <li><i class="fab fa-telegram me-2"></i>@affiliate_bot</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p>&copy; 2025 Affiliate Management System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/landing.js"></script>
+</body>
+</html>
+
